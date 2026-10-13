@@ -10,7 +10,7 @@ this is a markdown file
 ```{r}
 c(1,2,3,4,5)
 ```
-#gitHub PAT =  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 
+
 # Learning Outcomes:
 
 After Today's Lecture, you should be able to do the following:
