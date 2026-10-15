@@ -148,7 +148,7 @@ However, R can compute mathematical expressions. This means we can look
 at something like this:
 
 ```{r}
-3 ==4
+3 == 4
 
 14-9 == 3*2
 ```
