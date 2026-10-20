@@ -16,13 +16,9 @@ c(1,2,3,4,5)
 After Today's Lecture, you should be able to do the following:
 
 - Evaluate mathematical expressions and logical statements in R
-
 - Describe how to use common R functions
-
 - Explain the differences between variables, vectors, and dataframes
-
 - Explain how to obtain a subset of your data
-
 - Describe your data effectively
 
 # Panels of R Studio
