@@ -135,7 +135,7 @@ cast functions are the pairs to melt. `dcast()` specifically is used for datafra
 dcast has the following arguments: 
 `dcast(data, formula)`
 ```{r}
-datWide3<- dcast(aggressionDatLong, formula= subjNo+ ageGroup+parentReportGender+condition~timePoint)
+datWide3 <- dcast(aggressionDatLong, formula= subjNo+ ageGroup+parentReportGender+condition~timePoint)
 ```
 **Note:** dcast is really not intuitive. I pretty much determine the correct order through trial and error every time. 
 
@@ -307,10 +307,12 @@ To reverse code it, we would write
 There is also a recode in the car package
 ```{r}
 #reverse score the excluder 
-install.packages(car)
-library(car)
+library("car")
 
-aggressionAnxietyDat$likeExcluderRev<- recode(aggressionAnxietyDat$likeExcluder, recodes)
+aggressionAnxietyDat$likeExcluderRev<- 
+car:: recode(aggressionAnxietyDat$likeExcluder, recodes = "'1'=5; '2'=4; '4'=2;'5'=1")
+
+aggressionAnxietyDat |> mutate()
 ```
 Note: you'll notice that I wrote "car::" before the record function. This is necessary sometimes. Remember, the libraries are made by **different** people. People use the same words for different functions. So we need to tell R which of the functions we want to use. 
 

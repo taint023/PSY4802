@@ -1,0 +1,84 @@
+---
+title: "Dataset Manipulation Assignment"
+author: "Ryan Taintor"
+date: "23 October 2026"
+output: html_document
+---
+
+#Part 1
+1.Open the sleep dataset in R
+```{r}
+data(sleep)
+library(tidyverse)
+library(readr)
+library(dplyr)
+```
+
+2. Is it long or wide format? How do you know?
+#This is long format. I know this because the ID column repeats so there are multiple rows per participant. Each row represents a unique measurement.  
+
+3. Transform this data so that it is in the other format.
+`pivot_wider(dataset, id columns, names_from, values_from)`
+```{r}
+sleepWide <- sleep |> pivot_wider(id_cols = c("ID")  , names_from = "group" , values_from= "extra" )
+```
+
+4. Transform your data back to its original format.
+```{r}
+sleepLong <- sleepWide |> pivot_longer(cols= c("1", "2"), names_to = "group", values_to= "extra")
+```
+
+5. Open the Starwars dataset
+```{r}
+data("starwars")
+```
+
+6. Create homeworld as a factor. How many levels does it have?
+```{r}
+starwars$homeworldTwo <- as.factor(starwars$homeworld)
+levels(starwars$homeworldTwo)
+```
+
+7. Reorder homeworld so that Naboo is the reference group.
+```{r}
+starwars$homeworldTwo <- relevel(starwars$homeworldTwo, ref = "Naboo")
+levels(starwars$homeworldTwo)
+```
+
+8. Use mutate to create a column transforming kg to pounds. (hint: you may need to look up the conversion)
+```{r}
+starwars$weightLb<- NA
+starwars$weightLb <- starwars |>  mutate(weightLb= mass/2.2 ) |> select(mass, weightLb)
+#this one feels sloppy...
+```
+
+9. Print a summary of your column from #8
+```{r}
+summary(weightLb$weightLb)
+```
+
+
+#Part 2
+10. open the billboard dataset.
+```{r}
+data("billboard")
+```
+
+11. are the data in this dataframe in long or wide format? explain how you know.
+#The data in this dataframe are in wide format. I know because there is only one row per participant. Each column represents a unique measurement.
+
+12. change the data from its original format to the other version.
+```{r}
+billboardLong<- billboard |> pivot_longer(cols= c(colnames(billboard)[4:79]), names_to= "weeks", values_to="position", values_drop_na = TRUE)
+```
+
+13. change it from your altered version in #3 back to its original state.
+```{r}
+bilboardWide<- billboardLong  |> pivot_wider(id_cols= c("artist", "track", "date.entered"), names_from = "weeks", values_from= "position")
+```
+
+14. Separate the date entered column into three columns: one for year, one for month, and one for day.
+```{r}
+seperate()
+```
+
