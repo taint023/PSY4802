@@ -335,7 +335,7 @@ For scatter plots:
 color = 
 for scatterplot of price, carat, how can I add cut as another variable?
 ```{r}
-
+ggplot(diamonds, aes(carat, ))
 ```
 
 Rather than having all bars/dots/lines the same color, you can have them change by using various packages and by looking up a few color codes online. 
@@ -344,7 +344,7 @@ If you don't like the colors, we can specify specific ones using `scale_fill_man
 (need to specify option for color scales)
 We'll walk through these together because I think it's helpful to see what color combinations exist and how you can use them in a bar graph or a scatter plot.
 ```{r}
-
+ggplot(mtcars, aes(as.factor(gear), fill = as.factor(gear)))+geom_bar()+scale_fill_manual(values = c("#FFCC99","#FFFFCC","#ccccff" ))+theme_classic()
 ```
 `scale_color_manual(values = #)`; 
 ```{r}
@@ -354,14 +354,17 @@ We'll walk through these together because I think it's helpful to see what color
 R ColorBrewer
 `scale_color_brewer(palette=)`
 ```{r}
-
+install.packages("RColorBrewer")
+library(RColorBrewer)
+ggplot(diamonds, aes(carat, colour =cut ))+geom_histogram()+scale_color_brewer(palatte= "Purples")
 ```
 
 Viridis
 `scale_color_viridis()`
 ```{r}
-
-
+install.packages("viridis")
+library(viridis)
+ggplot(diamonds, aes(carat, fill = cut))+ geom_histogram(position = position_dodge())+scale_fill_viridis(option = "inferno", discrete = TRUE)
 ```
 
 

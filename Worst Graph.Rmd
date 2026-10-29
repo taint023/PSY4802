@@ -1,0 +1,14 @@
+---
+title: "Worst Graph"
+author: "Ryan Taintor"
+date: "2026-10-27"
+output: html_document
+---
+```{r}
+library(readr)
+darkTriad <- read_csv("darkTriad_Data-1.csv")
+library(ggplot2)
+
+ggplot(darkTriad, aes(Psychopathy))+geom_histogram(fill = "white", color="white")+theme_classic()
+```
+
