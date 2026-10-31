@@ -1,0 +1,415 @@
+---
+title: "ggplot notes part 1"
+author: "Amanda Mae Woodward"
+date: "2026-10-22"
+output: html_document
+---
+
+# Learning Outcomes
+
+By the end of this class, students should be able to: 
+- Transform data to appropriate formats for graphs
+- Create bar graphs,histograms, scatterplots, line graphs, and box plots in R 
+- Change aesthetic properties of graphs, including themes and colors
+- Incorporate third variables into graphs 
+
+**Notes:** There are several ways that you can graph in R. In today's class, we'll be focusing primarily on `ggplot()`. It's my personal favorite way to graph because you can customize so many things. We won't be able to go through all of them, but today's class will serve as an introduction to graphing and an introduction to different types of customization. 
+
+## Learning Outcome 1: Transform data to appropriate formats for graphs
+We've already talked about how to transform data into wide and long format. For some of you, you may need to create a data frame that contains summary statistics to graph (e.g. bar graphs). Before we talk about how to make the graphs, I'm going to show you one way you can make a summary data frame. 
+
+**summarySE**
+To do this, we're going to use a function called `summarySE()`. It's in the Rmisc package
+```{r}
+library(Rmisc)
+```
+
+We'll try this with the diamonds dataset (located in ggplot). Specifically, we'll create a summary of price by color. 
+
+Note: If you have a slow computer, make a subset of the diamonds dataset (typically, I use above 1 carat, but choose your favorite dimension)
+```{r}
+library(tidyverse)
+data(diamonds)
+```
+The structure for summarySE is: 
+`summarySE(data, measurevar(the variable you want to summarize), grouping variables, confidence interval)`
+```{r}
+diamondsSummary<- summarySE(diamonds, measurevar= "carat", groupvars = "color")
+```
+
+alternatively, you can use pipes to summarize your data and get it set up in the format you need for graphing. 
+
+To do this, we could use the `group_by()` function and the `summarise()` function 
+
+```{r}
+summaryDiamondsTwo<- diamonds |> 
+  group_by(color) |> summarise(meanCarat= mean(carat), sdCarat=sd(carat))
+```
+
+
+### Learning Outcome 1: Practice 
+1. Open the penguins dataset. Create a dataset containing a summary of the flipper length by species.
+```{r}
+library(palmerpenguins)
+data(penguins)
+```
+
+```{r}
+summaryPenguins<- summarySE(penguins, measurevar = "flipper_length_mm", groupvars="species", na.rm=TRUE)
+        #CI = sample mean + confidence level*sample          
+        #stdev/sqrt n 
+```
+
+### General Graphing Notes:
+we'll be talking about lots of ways you can make graphs. Things that we won't talk about today (but may be helpful):
+- APA style graphs https://rdrr.io/cran/jtools/man/theme_apa.html
+```{r}
+library(jtools)
+```
+
+## Learning Outcomes 2 & 3:Create bar graphs,histograms, scatterplots, line graphs, and box plots in R. Change aesthetic properties of graphs, including themes and colors
+
+To create graphs, we'll be using `ggplot()`. While some customizations are general (you can do them to any graph), others may feel more specific to one or two types of graphs. As we go through some examples, I'll try to point out which are general or specific. If you have questions, **please be sure to ask**.
+
+We also won't be able to cover everything this week. If you have questions, let me know and I will do my best to include them next week. 
+
+**Notes about ggplot2**
+ggplot makes graphs in layers. I'll try to demonstrate:
+
+Here is an "empty graph" 
+```{r}
+ggplot()
+```
+You'll notice that the Plot window opened on my version of R and contains a gray background. This is a default "empty graph."
+
+The next step is to include a dataset and to include an argument called aesthetics. It will look something like this: 
+
+`ggplot(data, aes(x,y))`
+
+In our case, we'll use the diamonds dataset again and see what happens when we include an x variable. 
+```{r}
+ggplot(diamonds, aes(carat))
+```
+
+You'll notice that now we have an x axis, labeled x with values on it. 
+
+This `ggplot()` section is the base of our graph. We add additional parts using a + sign. 
+
+**histogram** 
+We'll start with histograms because we only need one variable to make one. To do this, we can add `+geom_histogram()` to our code above. 
+
+```{r}
+ggplot(diamonds, aes(carat))+geom_histogram()
+```
+
+**Changing the background**
+I really don't like the gray background (personal preference). So the first customization we'll do is remove the background using a themes argument.
+```{r}
+ggplot(diamonds, aes(carat))+geom_histogram()+ theme_apa()
+```
+It can be used with any graph. 
+
+**Changing colors** 
+There are two additional arguments we can use to change the colors; color and fill. color will change the lines of the bars and fill will change the color of the bars. (this will be true for both histograms and bar graphs). 
+
+Note: color and fill go in the histogram layer
+```{r}
+ggplot(diamonds, aes(carat))+ geom_histogram(fill="lightcoral", color= "black")+theme_classic()
+
+ggplot(diamonds, aes(carat))+ geom_histogram(fill= "#CC99FF")
+```
+**Note**You can also put the color and fill arguments in the `aes()` section. As your graphs get more complicated, you will notice that placement matters and will result in slightly different graphs. We're not going to go that far today though.
+
+**Just because you can use a color scheme, doesn't mean you should** 
+
+#### Histogram Practice: 
+1. Create a histogram of the bill length variable. 
+```{r}
+ggplot(penguins, aes(bill_length_mm))+geom_histogram()
+
+```
+2. Include a theme to change the appearance of your graph.
+```{r}
+ggplot(penguins, aes(bill_length_mm))+geom_histogram()+theme_nice()
+
+```
+
+3. Create a histogram with orange bars and purple lines. 
+```{r}
+ggplot(penguins, aes(bill_length_mm)) + geom_histogram(fill="sienna1", color="blueviolet")+theme_classic()
+
+```
+
+4. **Bonus** Create a histogram with the worst color combination you can think of. 
+```{r}
+
+```
+
+**Bar graph** 
+Next, we'll talk about how to make a bar graph. We can do this the same way we make a histogram, but will use `geom_bar()`. 
+
+We'll practice on the "clarity" column. (I'll use another theme so you can see the differences)
+
+```{r}
+ggplot(diamonds, aes(clarity))+ geom_bar()
+```
+
+**Changing the x and y label axes** 
+You'll notice that our y axis is "count" and our x axis is "clarity"s. These are not particularly informative. We can change these using xlab and ylab. 
+```{r}
+ggplot(diamonds, aes(clarity))+geom_bar(fill= "#66CCFF")+ theme_classic()+ xlab("Clarity of Diamonds")+ ylab("Frequency")+ggtitle("Diamonds")
+# \n allows you to add space at the end 
+```
+
+you can also choose to use labs, with x, y, and title
+```{r}
+ggplot(diamonds, aes(clarity))+ geom_bar()+ theme_classic()+ labs(x= "Diamond clarity", y = "Frequency", title= "Diamonds")
+
+```
+
+**Using means in bar graphs**
+Sometimes, we don't just want the count of a category to make a bar graph. For instance, we may want to use a mean. We can do this by using the summary data frame we made before. 
+
+```{r}
+ggplot(diamondsSummary, aes(color, carat))+ geom_bar(stat="identity", fill="#336699")
+# don't do this without error bars
+```
+
+**standard errors**
+Using this dataset also allows us to include standard error bars or confidence intervals in our plots. We do this by adding a layer called `geom_errorbar(aes(ymin, ymax))`. 
+```{r}
+ggplot(diamondsSummary, aes(color, carat))+ geom_bar(stat="identity", fill= "pink",alpha=.5, color="black")+ theme_classic()+ geom_errorbar(aes(ymin = carat- se, ymax = carat+se, width= .3)) 
+
+```
+
+
+Things I included:
+- width: to get error bars to fit on top of bars
+- alpha: transparency of bars
+
+**Note:** there are several cases where the you may to include the argument `position_dodge()` to get the standard error bars to align with the actual bars on your graph. We may go through an example of this later, but if we don't have time, R cookbook has really good examples of how to do this. 
+
+**adding lines** (hline/vline)
+```{r}
+ggplot(diamondsSummary, aes(color, carat))+ geom_bar(stat="identity")+ geom_errorbar(aes(ymin= carat-se, ymax= carat+se, width=.3))+ geom_hline(yintercept = mean(diamonds$carat), color= "black", linetype = "dashed")+ theme_classic()
+```
+
+Things I changed: 
+- alpha: how transparent a layer is
+- width: how wide something is (can be applied to bars, error bars)
+- linetype: solid, dashed or something else
+- color: changes the color of lines (whether borders or lines)
+- size: changes how big something is 
+**Note:** `geom_vline()` works the same way,but you need to specify where it crosses the x intercept. 
+
+### Practice: 
+1. Create a bar graph for the species column. 
+2. Change the x and y labels to something that is more informative. 
+```{r}
+ggplot(penguins, aes(species))+geom_bar()+theme_classic()+labs(x="Penguin Species", y="Nubber of Penguins", title="Penguins")
+```
+
+
+### Adding a second variable to a bar graph: 
+```{r}
+ggplot(diamonds, aes(clarity, fill = color))+geom_bar()
+
+ggplot(diamonds, aes(clarity, fill = color))+geom_bar(position = position_dodge())
+
+ggplot(mtcars, aes(gear, fill=as.factor(mpg)))+geom_bar()
+ggplot(mtcars, aes(gear, fill=as.factor(cyl)))+geom_bar()
+
+```
+
+**Scatter plot**
+We can make scatter plots using the argument `geom_point()`. We'll make a graph of carat by price. 
+```{r}
+ggplot(diamonds, aes(price, carat))+geom_point()
+ggplot(diamonds, aes(price, carat))+geom_point(shape = 13, colour = "red")+geom_smooth(method = "lm", linetype = "dashed", colour = "black")
+
+```
+```{r}
+ggplot(diamonds, aes(price, carat, color = cut))+geom_point()
+```
+
+
+#jitter()
+```{r}
+
+```
+
+### Practice
+- make a scatter plot of bill length and bill depth. 
+```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+geom_point()
+```
+
+- modify the graph to include at least 2of the style elements we talked about
+```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+geom_point( colour = "cadetblue")+geom_smooth(method = "lm", linetype = "longdash", colour = "red")
+
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+geom_point( colour = "cadetblue")+geom_smooth(method = "lm", linetype = "longdash", colour = "red", se= FALSE) #THIS GETS RID OF THE GREY STANDARD ERROR ZONE AROUND THE REGRESSION LINE
+```
+
+**Note:**In this case, `geom_point()` is the best option to make our scatter plot. If you work with small datasets, the points may be overlapping and make it look like you have less data. In these cases, you can use `geom_jitter()`, which will offset the dots slightly and allow you to see each participant.  
+```{r}
+ggplot(diamonds, aes(price))+geom_boxplot()
+ggplot(diamonds, aes(color, price))+geom_boxplot()
+
+```
+
+```{r}
+ggplot(mtcars, aes(as.factor(gear), mpg))+geom_boxplot(fill = "aquamarine")+geom_jitter(color="blue")
+```
+
+**Inserting a regression line**
+We can include a regression line into our graph using `geom_smooth()`.
+```{r}
+cor(diamonds$carat, diamonds$price)
+```
+We can customize whether the regression line has a confidence interval surrounding it. You may be asking yourself **what confidence interval**. Carat and price are very highly correlated. let's use an mtcars example to see how we can change it. 
+w/ 95% confidence interval shaded
+
+####Practice: 
+1. Create a scatter plot of the body mass and flipper length variables. 
+```{r}
+
+```
+2. Change the color of the points to your favorite color. 
+```{r}
+
+```
+3. Change the shape of the points. 
+```{r}
+
+```
+4. Add a line of best fit to your scatter plot. 
+```{r}
+
+
+```
+
+**Line graphs**
+Line graphs follow a similar to scatterplots, but use the geom_line function. Color customizations follow the same rules as scatterplots. 
+include group in aes
+```{r}
+ggplot(diamonds, aes(price, carat))+geom_line()
+data("ChickWeight")
+ggplot(ChickWeight, aes(Time, weight, group = Chick, color=Chick))+geom_line()
+```
+
+
+
+I won't talk as much about these graphs, but happy to answer questions. 
+
+**Box plots**
+I hope that the pattern is starting to make sense, but the only difference with a box plot is that you'll use `geom_boxplot()`. 
+
+
+```{r twoVariableBoxplot}
+ggplot(diamonds, aes(y= price))+geom_boxplot()
+ggplot(diamonds, aes(x= price))+geom_boxplot()
+ggplot(diamonds, aes(x= cut, y= price))+geom_boxplot()
+```
+
+
+
+
+### Violin plot
+```{r}
+ggplot(diamonds, aes(cut, price))+geom_violin()
+```
+
+```{r}
+ggplot(diamonds, aes(cut, price))+geom_violin(fill = "aquamarine", color="cadetblue")+geom_jitter(color="red", alpha = .05)
+```
+
+### Practice: 
+1. Create a boxplot for flipper length.
+```{r}
+ggplot(penguins, aes(flipper_length_mm))+geom_boxplot()
+```
+
+2. Create boxplots of flipper length for each species.
+```{r}
+ggplot(penguins, aes(species, flipper_length_mm))+geom_boxplot()
+```
+
+3. **Bonus** play around with fill and color. What changes about your boxplots? 
+```{r}
+ggplot(penguins, aes(species, flipper_length_mm))+geom_boxplot(fill = "red", color="black")+theme_linedraw()+ggtitle(label= "Species Flipper Length")
+
+```
+
+## Learning Outcome 4:Incorporate third variables into graphs
+There are many ways that we can include third variables. 
+
+For histograms/bar graphs: 
+use fill = 
+price histogram, how i can add color as another variable? 
+```{r}
+ggplot(diamonds, aes(carat))+geom_histogram(fill = "orange")
+```
+
+For scatter plots: 
+color = 
+for scatterplot of price, carat, how can I add cut as another variable?
+```{r}
+ggplot(diamonds, aes(price, carat))+geom_point(color="black")
+```
+
+Rather than having all bars/dots/lines the same color, you can have them change by using various packages and by looking up a few color codes online. 
+
+If you don't like the colors, we can specify specific ones using `scale_fill_manual()` OR using a package called R color brewer `scale_color_brewer()`  or viridis. 
+(need to specify option for color scales)
+We'll walk through these together because I think it's helpful to see what color combinations exist and how you can use them in a bar graph or a scatter plot.
+```{r}
+ggplot(mtcars, aes(as.factor(gear), fill = as.factor(gear)))+geom_bar(color="black")+scale_fill_manual(values = c("#FFCC99","#FFFFCC","#ccccff" ))+theme_classic()
+```
+`scale_color_manual(values = #)`; 
+```{r}
+ggplot(mtcars, aes(mpg, hp, color=as.factor(gear))) +geom_point()+scale_color_manual(values=c("#ffcc99","#ffffcc","#ccccff"))+theme_classic()
+```
+
+R ColorBrewer
+`scale_color_brewer(palette=)`
+```{r}
+library(RColorBrewer)
+ggplot(diamonds, aes(carat, fill=cut ))+geom_histogram()+scale_fill_brewer(palette= "Blues")
+
+ggplot(diamonds, aes(carat, price, color=cut))+geom_point()+scale_color_brewer(palette = "Purples")
+```
+
+Viridis
+`scale_color_viridis()`
+```{r}
+library(viridis)
+library(ggplot2)
+ggplot(diamonds, aes(carat, fill = cut))+ geom_histogram(position = position_dodge())+scale_fill_viridis(option = "inferno", discrete = TRUE)
+
+ggplot(diamonds, aes(carat, price, color=cut))+geom_point()+scale_color_viridis(discrete = TRUE, option = "magma")
+```
+
+
+### Learning Outcome 4 Practice. 
+1. Create a graph of bill length and island
+```{r}
+library(ggplot2)
+ggplot(penguins, aes(bill_length_mm, island))+geom_boxplot()
+```
+
+2. In some way, include species as a third variable in this graph. 
+```{r}
+ggplot(penguins, aes(bill_length_mm, island, color=species))+geom_boxplot()
+```
+
+3. Create a graph of bill length and bill depth
+```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+geom_point()
+
+```
+4. In some way, include species as a third variable.
+```{r}
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color= species))+geom_point()
+
+```

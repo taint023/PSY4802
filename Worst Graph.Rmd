@@ -10,5 +10,7 @@ darkTriad <- read_csv("darkTriad_Data-1.csv")
 library(ggplot2)
 
 ggplot(darkTriad, aes(Psychopathy))+geom_histogram(fill = "white", color="white")+theme_classic()
+
+ggplot(darkTriad, aes(Psychopathy))+geom_histogram(fill = "purple", color="black")+theme_classic()+ xlab("Psycopathy")+ ylab("Frequency")+ggtitle("Psycopathy")
 ```
 

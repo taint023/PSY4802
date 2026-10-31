@@ -1,0 +1,11 @@
+---
+title: "Best Graph"
+author: "Ryan Taintor"
+date: "2026-10-30"
+output: html_document
+---
+
+```{r}
+ggplot(darkTriad, aes(Psychopathy))+geom_histogram(fill = "purple", color="black")+theme_classic()+ xlab("Psycopathy")+ ylab("Frequency")+ggtitle("Psycopathy")
+```
+
