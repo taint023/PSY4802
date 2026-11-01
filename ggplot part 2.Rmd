@@ -20,13 +20,15 @@ It can also be helpful to understand how to modify your legend:
 Let's try this on a graph from the diamonds dataset: 
 ```{r}
 library(tidyverse)
+ggplot(diamonds, aes(color, price, fill=color))+geom_boxplot()
+ggplot(diamonds, aes(color, price, fill=color))+geom_boxplot()+theme(legend.position = "none")
+
 ggplot(diamonds, aes(color, price, color= cut))+ geom_point()# not super helpful 
-ggplot(diamonds, aes(color, price, fill=cut)) + geom_boxplot()
 ```
 
 We can also change the location: 
 ```{r}
-ggplot(diamonds, aes(color, price, fill=color))+geom_boxplot()+theme_
+ggplot(diamonds, aes(color, price, fill=color))+geom_boxplot()+theme(legend.position = "top")
 ```
 top, left, right, bottom, or none 
 
@@ -35,17 +37,13 @@ To Change the legend title, you can use a couple of different codes, depending o
 `scale_fill_manual(name="Title)` should work for a bar graph filled in by a factor
 `scale_color_continuous()` and `scale_fill_continuous()` should work for a numeric fill
 ```{r}
-ggplot(diamonds,aes(color,price, fill = color))+geom_boxplot()+scale_fill_manual(values = c("red","orange","yellow","green", "blue", "purple","pink")name = "Color of Diamonds")
+ggplot(diamonds,aes(color,price, fill = color))+geom_boxplot()+scale_fill_manual(values = c("red","orange","yellow","green", "blue", "purple","pink"),name = "Color of Diamonds")
 ```
 
 ### Practice:
-```{r}
-
-```
-
 1) make a graph of bill length and bill depth. Include island as a third variable
 ```{r}
-
+ggplot()
 ```
 
 2) Move the legend to the top of the graph

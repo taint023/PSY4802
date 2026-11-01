@@ -395,12 +395,12 @@ ggplot(diamonds, aes(carat, price, color=cut))+geom_point()+scale_color_viridis(
 1. Create a graph of bill length and island
 ```{r}
 library(ggplot2)
-ggplot(penguins, aes(bill_length_mm, island))+geom_boxplot()
+ggplot(penguins, aes(island, bill_length_mm))+geom_boxplot()+theme_classic()+geom_jitter(alpha = .3)
 ```
 
 2. In some way, include species as a third variable in this graph. 
 ```{r}
-ggplot(penguins, aes(bill_length_mm, island, color=species))+geom_boxplot()
+ggplot(penguins, aes(island, bill_length_mm,fill = species, color=species))+geom_boxplot()+theme_classic()+geom_jitter(alpha = .3)+scale_fill_viridis(discrete = TRUE, option = "H")+scale_color_viridis(discrete = TRUE, option = "H")
 ```
 
 3. Create a graph of bill length and bill depth
@@ -412,4 +412,5 @@ ggplot(penguins, aes(bill_length_mm, bill_depth_mm))+geom_point()
 ```{r}
 ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color= species))+geom_point()
 
+ggplot(penguins, aes(bill_length_mm, bill_depth_mm, color= species))+geom_point()+scale_color_viridis(discrete = TRUE, option = "magma")
 ```
