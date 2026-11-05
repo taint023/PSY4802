@@ -18,7 +18,7 @@ ggplot(starwars, aes(eye_color))+geom_bar()
 3. Customize your graph to make it more presentable. Consider color, backgrounds, axes, etc. 
 ```{r}
 ggplot(starwars, aes(eye_color))+geom_bar(fill = "gold", color= "maroon")+theme_dark()+ xlab("Eye Color")+ ylab("Frequency")+ggtitle("Eye Color of Star Wars Characters")+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
-
+#the +theme(axis.text.x = element_text(angle=90, vjust = 0.5, hjust = 1)) code turns the x axis color labels 90 degrees, moves them to be more in-line with the bars they're under, and aligns the end of the label with the bottom edge of the graph.  
 ```
 
 4. Create a graph displaying information about character's height in each homeworld. 
@@ -29,7 +29,7 @@ ggplot(starwars, aes(homeworld, height))+geom_boxplot()
 5. Customize your graph to make it more presentable. Consider color, backgrounds, axes, etc.
 ```{r}
 ggplot(starwars, aes(homeworld, height))+geom_boxplot()+geom_jitter(color="red", alpha = .3)+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))+ xlab("Eye Color")+ ylab("Frequency")+ggtitle("Eye Color of Star Wars Characters")
-
+#the +theme(axis.text.x=element_text(angle = 90... code turns the homeworld labels 90 degrees, "vjust=0.5" moves the now vertically aligned homeworld labels to the left slightly, and "hjust=1" aligns the last letter of the homeworld label with the bottom edge of the graph. 
 ```
 
 6. Create a graph of character's height by mass. 

@@ -80,6 +80,6 @@ bilboardWide<- billboardLong  |> pivot_wider(id_cols= c("artist", "track", "date
 14. Separate the date entered column into three columns: one for year, one for month, and one for day.
 ```{r}
 class(billboard$date.entered)
-separate()
+billboard |> sepa rate(date.entered, into=c("year", "month", "day"), sep="-")
 ```
 

@@ -1,0 +1,11 @@
+---
+title: "Best/Worst"
+author: "Ryan Taintor"
+date: "2026-11-05"
+output: html_document
+---
+```{r}
+ggplot(darkTriad_Data.1, aes(V32))+geom_boxplot()
+
+```
+
