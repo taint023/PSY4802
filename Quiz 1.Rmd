@@ -31,6 +31,7 @@ starWarsHuman <- subset(starwars, starwars$species=="Human")
 ```{r}
 starWarsHuman[3:3,]
 ```
+aw comment: don't need 3:3, could just use 3 in brackets
 
 6. In the full starwars dataset, calculate the average mass for the masculine characters. 
 ```{r}
@@ -47,6 +48,7 @@ starwarsNamesAndFilms <- starwars |> select(name, films)
 ranking <- c(1:87)
 starwarsWithRanking <- cbind.data.frame(starwars, ranking)
 ```
+could also use starwars$ranking <- 1:87
 
 9. Create a subset of data for the characters from Naboo. How many characters are from Naboo? 
 ```{r}
