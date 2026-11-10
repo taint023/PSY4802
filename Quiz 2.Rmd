@@ -4,13 +4,6 @@ author: "Ryan Taintor"
 date: "2026-11-09"
 output: html_document
 ---
----
-title: "Quiz 2"
-author: "Amanda Mae Woodward"
-date: "2026-11-03"
-output: html_document
----
-
 
 This quiz will focus on data frame manipulation, however, you may need to rely on skills you've learned in prior weeks. 
 
@@ -52,7 +45,12 @@ starwarsLong$inANewHope <- newHopeFunction(starwarsLong$movieTitleCorrected)
   
 6. BMI is calculated as mass in Kg/height in meters squared. You currently have mass in Kg and height in cm. Create a column that contains each character's BMI. 
 ```{r}
-
+starwars$heightMeters<-NA
+meterFunction <- function(height){starwars$height/100}
+heightMeters <- meterFunction(heightMeters)
+heightMeterSquaredFunction <- function(heightMeters){heightMeters^2}
+heightMSQ <- heightMeterSquaredFunction(heightMeters)
+heightMSQ
 ```
 
 7. create a dataframe that contains only the name, hair color, and eye color for each character. 
