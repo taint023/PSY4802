@@ -21,14 +21,42 @@ data("starwars")
 ```
 
 2. separate the films column so that there is one film in each column (don't worry about the "c(" and ) at the end for now)
-
+```{r}
+seperateMovieSW <- starwars |> separate(films, into = c("movie 1", "movie 2", "movie 3", "movie 4", "movie 5", "movie 6", "movie 7"), sep = ",")
+```
 
 3. alter the data from wide data to long data
+```{r}
+starwarsLong <- pivot_longer(seperateMovieSW, cols = c("movie 1", "movie 2", "movie 3", "movie 4", "movie 5", "movie 6", "movie 7"), names_to = "rollNumber", values_to = "movieTitle", values_drop_na = TRUE)
+```
 
 4. in the column where you stored the films, rename the levels so each film name is consistent (e.g. get rid of the "c(" and ")" )
+```{r}
+class(starwarsLong$movieTitle)
+```
+```{r}
+starwarsLong$movieTitle <- as_factor(starwarsLong$movieTitle)
+levels(starwarsLong$movieTitle)
+```
+```{r}
+starwarsLong$movieTitleCorrected <- as.factor(starwarsLong$movieTitle)
+levels(starwarsLong$movieTitleCorrected)<- c("A New Hope", "The Empire Strikes Back", "Return of the Jedi", "Revenge of the Sith", "The Force Awakens", "The Phantom Menace", "Attack of the Clones", "Revenge of the Sith", "A New Hope", "The Phantom Menace", "The Phantom Menace", "Return of the Jedi", "The Empire Strikes Back", "Attack of the Clones", "The Empire Strikes Back", "Return of the Jedi", "Return of the Jedi", "The Phantom Menace", "Attack of the Clones", "Attack of the Clones", "Revenge of the Sith", "The Force Awakens")
+```
 
 5. Create a column in your dataset that indicates whether a character was in the first starwars film, *Star Wars Episode IV: A New Hope* 
-
+```{r}
+starwarsLong$inANewHope<-NA
+newHopeFunction <- function(movieTitleCorrected){movieTitleCorrected=="A New Hope"}
+starwarsLong$inANewHope <- newHopeFunction(starwarsLong$movieTitleCorrected)
+```
+  
 6. BMI is calculated as mass in Kg/height in meters squared. You currently have mass in Kg and height in cm. Create a column that contains each character's BMI. 
+```{r}
+
+```
 
 7. create a dataframe that contains only the name, hair color, and eye color for each character. 
+```{r}
+
+```
+

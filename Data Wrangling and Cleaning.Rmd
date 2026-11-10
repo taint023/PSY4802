@@ -240,7 +240,7 @@ class(aggressionAnxietyDat$parentReportGender)
 it's currently a character, so we can change it to a factor using as.factor (which we talked about last week). Then, we can use the function `levels()` to change the data. 
 
 ```{r}
-aggressionAnxietyDat$parentReportGenderTwo <- as.factor(aggressionAnxietyDat$parentReportGender)
+aggressionAnxietyDat$parentReportGenderTwo <-as.factor(aggressionAnxietyDat$parentReportGender)
 levels(aggressionAnxietyDat$parentReportGenderTwo)<- c("girl", "boy")
 levels(aggressionAnxietyDat$parentReportGenderTwo)
 ```
