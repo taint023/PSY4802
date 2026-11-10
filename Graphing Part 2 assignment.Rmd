@@ -1,0 +1,68 @@
+---
+title: "Graphing Part 2 Assignment"
+author: "Ryan Taintor"
+date: "2026-11-09"
+output: html_document
+---
+
+1. Open the starwars dataset (located in tidyverse)
+```{r}
+library(tidyverse)
+data("starwars")
+```
+
+2. Create a scatter plot of character's height and mass. 
+```{r}
+library(ggplot2)
+ggplot(starwars, aes(height, mass))+geom_point()
+```
+
+2a. Change the color and shape of the points in your scatter plot. 
+```{r}
+ggplot(starwars, aes(height, mass))+geom_point(color = "maroon",shape = 7)
+```
+
+3. Add Homeworld as a third variable to your scatterplot. 
+```{r}
+ggplot(starwars, aes(height, mass, colour = homeworld))+geom_point()
+```
+
+3a. What do you notice about the graph? (e.g. describe what you see)
+#It is challenging to interpret because there are many levels for "homeworld" and our legend colors are hard to differentiate from each other.
+4. Make a boxplot of height. 
+```{r}
+ggplot(starwars, aes(height))+geom_boxplot()
+```
+
+5. Make a boxplot of height for each species present in the data. 
+```{r}
+ggplot(starwars, aes(species, height))+geom_boxplot()
+
+```
+
+5a. change the appearance of your graph in at least 3 ways. 
+```{r}
+ggplot(starwars, aes(species, height))+geom_boxplot()+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))+geom_jitter(color="red", alpha = .3)+xlab("Species")+ylab("Height (cm)")+ggtitle("Height of Star Wars Characters by Species")
+```
+
+6. Using any variables in the starwars dataset, create a graph that uses a color palette from viridis.
+```{r}
+library(viridis)
+ggplot(starwars, aes(height, mass, color=species))+geom_point()+scale_color_viridis(discrete = TRUE, option = "magma")
+```
+
+7.Using any variables in the starwars dataset, create a graph that uses a color palette from RColorBrewer.
+```{r}
+library(RColorBrewer)
+ggplot(starwars, aes(height, mass, color=sex))+geom_point()+scale_color_brewer(palette = "PuOr")
+```
+
+8. Using any variables in the starwars dataset, create a graph using facet_wrap
+```{r}
+ggplot(starwars, aes(mass, sex))+geom_boxplot()+facet_wrap(~hair_color)
+```
+```{r}
+data("starwars")
+```
+
+
